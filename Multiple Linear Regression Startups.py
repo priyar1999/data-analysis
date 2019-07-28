@@ -73,17 +73,6 @@ accuracies = cross_val_score(estimator=regressor, X=X_train, y=y_train, cv=10)
 accuracies.mean()
 accuracies.std()'''
 
-
-
-
-
-
-
-
-
-
-
-
 ''' Check for linearity assumption again (dataset should be large)
 This assumption implies that there should be a linear relationship between the
 response variable and the predictors.
@@ -111,7 +100,7 @@ def r_squared(x, y, **kws):
     ax.annotate("r^2 = {:.3f}".format(r**2),
                 xy=(.1, .9), xycoords=ax.transAxes)
 
-# Check for Linearity visually
+# 1)Check for Linearity visually
 linearity_assumption_plot_1 = sns.pairplot(pd.DataFrame(X), kind="reg")
 linearity_assumption_plot_1.map_lower(r_squared)
 
@@ -125,11 +114,7 @@ linearity_assumption_plot_2 = sns.pairplot(linearity_test_df.iloc[:, 2:], kind="
 linearity_assumption_plot_2.map_lower(r_squared)
 
 
-
-
-
-
-''' Check for No Endogenity of regressors : Residuals should not be highly
+''' 2) Check for No Endogenity of regressors : Residuals should not be highly
 coorelated with other predictors
 
 The errors (difference between the observed and predicted values) is coorelated 
@@ -158,8 +143,7 @@ endogenity_check = linearity_test_df.corr() # Check only the reciduals row with 
 
 
 
-
-''' 4) Homoscedasticity
+''' 3) Homoscedasticity
 Assumes the error terms have equal variance. 
 An example of a dataset where errors have a different variance looks like a 
 cone around the regression line.This means that with smaller values we get a better
@@ -198,7 +182,7 @@ import statsmodels.stats as st
 _, pval, __, f_pval = st.diagnostic.het_breuschpagan(error_residual['Profit'],  X_test)
 
 
-'''3) Normality
+'''4) Normality
 We assume error terms are normally distributed with mean of zero.
 This is not requred to make the model but to make the inferences.
 The pvalues and t values we get in the reports work because we assume normality
@@ -221,12 +205,6 @@ p > 0.05 confirm to the normality criterion
 '''
 # Shapiro-Wilk normality test
 stats.shapiro(error_residual['Profit'])
-
-
-
-
-
-
 
 # The coefficients
 print('Coefficients: \n', regressor.coef_)
@@ -258,7 +236,7 @@ print( regressor_OLS )
 # Print a nice summary of the regression. That's one of the strong points of statsmodels -> the summaries
 # Check for multicolinearity with large condition number
 
-''' No Autocorrelation (No serial correlation) check for Durbin-Watson number
+'''5) No Autocorrelation (No serial correlation) check for Durbin-Watson number
 This cannot be relaxed.
 Errors are assumed to be uncorrelated - randomly spread around the regression line
 Its unlikey to find this in data taken in one moment of time (cross sectional data)
